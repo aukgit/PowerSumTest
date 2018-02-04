@@ -27,9 +27,18 @@ class Solution {
         var list = CreateList(dTargetedNumber, dPower);
         //var clonedList = new 
 
-        var indexes = GeneratePermutationIndexesCollection(list);
+        var indexesCollection = GeneratePermutationIndexesCollection(list);
 
-        return 0;
+        var targetMatched = 0;
+
+        foreach (var indexes in indexesCollection) {
+            var sum = GetSum(list, indexes);
+            if (sum == targetedNumber) {
+                targetMatched++;
+            }
+        }
+
+        return targetMatched;
     }
 
     static List<int> CreateList(double targetedNumber, double power) {
@@ -110,22 +119,7 @@ class Solution {
                 
                 currentNode = currentNode.Next ?? _circurlarLinkedList.First;
             }
-            //for (int j = start; j < end; j++) {
-            //    var isSkipRequired = i == j - skiped && skiped < except;
-
-            //    var isSkip2 = (end - 1 - j) < except && !isSkipRequired;
-            //    // when the number is at the end and skip is more than the ending we need to remove first numbers as well.
-            //    /**
-            //     * 0 1 2 3 4 5 6 7 8 9
-            //     * _ 1 2 3 4 5 6 7 _ _   == need to skip 3 from 7
-            //     * */
-            //    if (isSkip2) {
-            //        skiped++;
-            //        continue;
-            //    }
-
-
-            //}
+           
 
 
 
@@ -135,11 +129,13 @@ class Solution {
                 possiblities.Add(list);
             }
         }
+
+       
     }
 
 
-    static int GetSum(int[] collection, int[] indexes) {
-        int len = indexes.Length;
+    static int GetSum(List<int> collection, List<int> indexes) {
+        int len = indexes.Count;
         int sum = 0;
 
 
@@ -154,9 +150,9 @@ class Solution {
 
         int mid = len / 2;
         int lastIndex = len - 1;
-        Console.WriteLine("Mid : " + indexes[mid] + "; val :" + collection[indexes[mid]]);
+        // Console.WriteLine("Mid : " + indexes[mid] + "; val :" + collection[indexes[mid]]);
         for (int i = 0; i < mid; i++) {
-            Console.WriteLine("indexes[i] : " + indexes[i] + ", val : " + collection[indexes[i]] + "; indexes[lastIndex - i] : " + indexes[lastIndex - i] + ", val : " + collection[indexes[lastIndex - i]]);
+            // Console.WriteLine("indexes[i] : " + indexes[i] + ", val : " + collection[indexes[i]] + "; indexes[lastIndex - i] : " + indexes[lastIndex - i] + ", val : " + collection[indexes[lastIndex - i]]);
             sum += collection[indexes[i]] + collection[indexes[lastIndex - i]];
         }
 
@@ -168,13 +164,13 @@ class Solution {
     }
 
     static void Main(String[] args) {
-        //int x = Convert.ToInt32(Console.ReadLine());
-        //int n = Convert.ToInt32(Console.ReadLine());
-        int result = PowerSum(200, 2);
+        int x = Convert.ToInt32(Console.ReadLine());
+        int n = Convert.ToInt32(Console.ReadLine());
+        int result = PowerSum(x, n);
         int[] test = { 0, 1, 2, 3, 4, 5 };
         int[] testIndexes = { 0, 3, 1, 4, 5 };
-        double sum = GetSum(test, testIndexes);
-        Console.WriteLine(sum);
+        //double sum = GetSum(test, testIndexes);
+        //Console.WriteLine(sum);
         Console.WriteLine(result);
 
 
