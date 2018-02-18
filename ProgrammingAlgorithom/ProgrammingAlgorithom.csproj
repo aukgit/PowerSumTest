@@ -7,8 +7,8 @@
     <ProjectGuid>{E494D196-B8D6-48A3-B982-6D0AC09768D0}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PowerSumTest</RootNamespace>
-    <AssemblyName>PowerSumTest</AssemblyName>
+    <RootNamespace>ProgrammingAlgorithom</RootNamespace>
+    <AssemblyName>ProgrammingAlgorithom</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,12 +41,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\ProblemBase.cs" />
+    <Compile Include="Base\InputExtension.cs" />
+    <Compile Include="GirafSortingSubsetProblem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solution\PowerSumDisplay.cs" />
+    <Compile Include="Solution\BinaryNumberDisplay.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
