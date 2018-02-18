@@ -16,8 +16,18 @@ namespace ProgrammingAlgorithom.Base {
         }
 
         public static void PrintList<T>(List<T> list) {
-            Console.WriteLine("[");
-            list.ForEach(item => Console.Write(item + ",")); //Put a,b etc.
+            Console.WriteLine("");
+            Console.Write("[");
+            // list.ForEach(item => Console.Write(item + ",")); //Put a,b etc.
+            Console.Write(string.Join(",", list));
+            Console.Write("]");
+        }
+
+        public static void PrintArray<T>(T[] list) {
+            Console.WriteLine("");
+            Console.Write("[");
+            // list.ForEach(item => Console.Write(item + ",")); //Put a,b etc.
+            Console.Write(string.Join(",", list));
             Console.Write("]");
         }
 
@@ -91,6 +101,26 @@ namespace ProgrammingAlgorithom.Base {
                     var result = 0;
                     if (int.TryParse(item, out result)) {
                         list.Add(result);
+                    }
+                }
+
+                return list;
+            }
+
+            return null;
+        }
+
+        public static int[] TakeInputAsIntArray(string prompt) {
+            Console.WriteLine(prompt);
+            var input = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(input)) {
+                var array = input.Split(',');
+                var list = new int [array.Length];
+                int i = 0;
+                foreach (var item in array) {
+                    var result = 0;
+                    if (int.TryParse(item, out result)) {
+                        list[i++] = result;
                     }
                 }
 
