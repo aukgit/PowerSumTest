@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ProblemBase.cs" />
-    <Compile Include="Base\InputExtension.cs" />
+    <Compile Include="Base\InputOutputExtension.cs" />
     <Compile Include="GirafSortingSubsetProblem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

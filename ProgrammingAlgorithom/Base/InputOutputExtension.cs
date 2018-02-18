@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 
 namespace ProgrammingAlgorithom.Base {
-    public static class InputExtension {
+    public static class InputOutputExtension {
         public static TInputType TakeInput<TInputType>(string prompt) {
             Console.WriteLine(prompt);
             var input = Console.ReadLine();
@@ -13,6 +13,12 @@ namespace ProgrammingAlgorithom.Base {
             }
 
             return default(TInputType);
+        }
+
+        public static void PrintList<T>(List<T> list) {
+            Console.WriteLine("[");
+            list.ForEach(item => Console.Write(item + ",")); //Put a,b etc.
+            Console.Write("]");
         }
 
         public static void PrintIndentFromUpper(int indent) {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ProgrammingAlgorithom.Base;
-using IE = ProgrammingAlgorithom.Base.InputExtension;
 
 namespace ProgrammingAlgorithom.Solution {
     public class PowerSumDisplay {
@@ -32,6 +31,32 @@ namespace ProgrammingAlgorithom.Solution {
             }
 
             return targetMatched;
+        }
+
+        public static void CombinationHelper(string x, List<string> chosen) {
+            int remaingLength = x.Length - chosen.Count;
+            if (remaingLength == 0) {
+                InputOutputExtension.PrintList(chosen);
+            } else {
+
+                // chose
+                string first = x[0].ToString();
+                x = x.Remove(0, 1);
+                chosen.Add(first);
+                CombinationHelper(x, chosen);
+
+                // explore
+                chosen.RemoveAt(chosen.Count - 1);
+                CombinationHelper(x, chosen);
+
+                // unchose
+                x = x.Insert(0, first);
+            }
+        }
+
+        public static void Combination(string x) {
+            var chosen = new List<string>(x.Length * 2);
+            CombinationHelper(x, chosen);
         }
 
         public static List<int> CreateList(double targetedNumber, double power) {

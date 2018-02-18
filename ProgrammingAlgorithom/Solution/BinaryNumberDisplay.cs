@@ -1,12 +1,11 @@
 ﻿using System;
 using ProgrammingAlgorithom.Base;
-using IE = ProgrammingAlgorithom.Base.InputExtension;
 
 namespace ProgrammingAlgorithom.Solution {
     public class BinaryNumberDisplay {
 
         private void SolutionHelper(int binary, string prefix) {
-            IE.PrintIndentFromDown(binary);
+            InputOutputExtension.PrintIndentFromDown(binary);
 
             Console.Write("SolutionHelper(" + binary + "," + prefix + ")\n");
 
