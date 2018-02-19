@@ -46,12 +46,13 @@
     <Compile Include="GirafSortingSubsetProblem.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runner\PowerSumRunner.cs" />
     <Compile Include="Runner\QuasiRunner.cs" />
     <Compile Include="Runner\CombinationRunner.cs" />
     <Compile Include="Solution\PowerSumDisplay.cs" />
     <Compile Include="Solution\BinaryNumberDisplay.cs" />
     <Compile Include="Solution\QuasiConstant.cs" />
-    <Compile Include="Solution\StringCombinationGenerator.cs" />
+    <Compile Include="Solution\CombinationGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

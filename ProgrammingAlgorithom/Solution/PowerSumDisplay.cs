@@ -3,28 +3,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ProgrammingAlgorithom.Base;
+using IO = ProgrammingAlgorithom.Base.InputOutputExtension;
 
 namespace ProgrammingAlgorithom.Solution {
     public class PowerSumDisplay {
         const int SumOf10SquareCollection = 385;
         const int SumOf14SquareCollection = 1015;
         const int SumOf10CubeCollection = 3025;
-        private static LinkedList<int> _circurlarLinkedList;
+        private static Dictionary<string, List<int>> _cachedPossibleNumbers = new Dictionary<string, List<int>>(300);
+        private static Dictionary<string, List<List<int>>> _cachedListIndexes = new Dictionary<string, List<List<int>>>(500);
+
+        static List<int> CreateOrGetPossibleList(double targetedNumber, double power) {
+            var key = "t:" + targetedNumber + "|p:" + power;
+
+            if (_cachedPossibleNumbers.ContainsKey(key)) {
+                return _cachedPossibleNumbers[key];
+            }
+
+            var possibleNumbersList = CreatePossibleNumbersList(targetedNumber, power);
+            _cachedPossibleNumbers[key] = possibleNumbersList;
+            return possibleNumbersList;
+        }
+
+        static List<List<int>> CreateOrGetPossibleIndexes(int range) {
+            var key = "r:" + range + "|";
+            if (_cachedListIndexes.ContainsKey(key)) {
+                return _cachedListIndexes[key];
+            }
+
+            var indexesCollection = GenerateIndexesCombination(range);
+            _cachedListIndexes[key] = indexesCollection;
+            return indexesCollection;
+        }
 
         public static int PowerSum(int targetedNumber, int power) {
             // Complete this function
             double dTargetedNumber = (double) targetedNumber;
             double dPower = (double) power;
-            var list = CreateList(dTargetedNumber, dPower);
+            var possibleNumbersList = CreateOrGetPossibleList(dTargetedNumber, dPower);
             //var clonedList = new 
 
-            var indexesCollection = GeneratePermutationIndexesCollection(list);
+            var indexesCollection = CreateOrGetPossibleIndexes(possibleNumbersList.Count);
 
             var targetMatched = 0;
 
+            Console.WriteLine("Found sum to be accurate : ");
             foreach (var indexes in indexesCollection) {
-                var sum = GetSum(list, indexes);
+                var sum = GetSum(possibleNumbersList, indexes);
                 if (sum == targetedNumber) {
+                    IO.PrintList(possibleNumbersList, indexes);
                     targetMatched++;
                 }
             }
@@ -33,22 +60,16 @@ namespace ProgrammingAlgorithom.Solution {
         }
 
 
-        public static List<int> CreateList(double targetedNumber, double power) {
-            int ending = 10;
+        public static List<int> CreatePossibleNumbersList(double targetedNumber, double power) {
+            int ending = (int)targetedNumber;
 
-            bool isSqaure = (int) power == 2;
+            //bool isSqaure = (int) power == 2;
 
-            if ((int) power == 1) {
-                ending = 1000;
-                return Enumerable.Range(1, ending).AsParallel().ToList();
-            }
+            //if ((int) power == 1) {
+            //    ending = 1000;
+            //    return Enumerable.Range(1, ending).AsParallel().ToList();
+            //}
 
-            bool isPossibilityPresentInSumOf10SquaresCollection = isSqaure && targetedNumber <= SumOf10SquareCollection;
-            bool isPossibilityPresentInSumOf14SquaresCollection = !isPossibilityPresentInSumOf10SquaresCollection && targetedNumber <= SumOf14SquareCollection;
-
-            if (isPossibilityPresentInSumOf14SquaresCollection) {
-                ending = 15;
-            }
 
             double sum = 0;
 
@@ -59,73 +80,19 @@ namespace ProgrammingAlgorithom.Solution {
                 poweredValue = Math.Pow(i, power);
                 sumList.Add((int) poweredValue);
                 sum += poweredValue;
-                if (poweredValue >= targetedNumber) {
-                    return sumList;
-                }
+                //if (poweredValue >= targetedNumber) {
+                //    return sumList;
+                //}
             }
 
             return sumList;
         }
 
-        public static List<List<int>> GeneratePermutationIndexesCollection(List<int> collection) {
-            var len = collection.Count;
-
-            var range = Enumerable.Range(0, len).ToList();
-            var possiblities = new List<List<int>>();
-
-            possiblities.Add(range);
-
-            _circurlarLinkedList = null;
-            _circurlarLinkedList = new LinkedList<int>(Enumerable.Range(0, len));
-
-
-            for (int i = 1; i <= len - 1; i++) {
-                GetSubIndexList(ref possiblities, 0, len, i);
-            }
-
-            return possiblities;
-
+        public static List<List<int>> GenerateIndexesCombination(int range) {
+            var list = new LinkedList<int>(Enumerable.Range(0, range));
+            return CombinationGenerator.Combination(list);
         }
-
-        public static void GetSubIndexList(ref List<List<int>> possiblities, int start, int end, int except) {
-            int skiped = 0, indexCounter = 0;
-            LinkedListNode<int> currentNode = null;
-
-            for (int i = start; i < end; i++) {
-                var list = new List<int>(end + 5);
-
-                // Enumerable.Range(i, end + 1).Skip(except);
-                currentNode = currentNode ?? _circurlarLinkedList.First;
-                while (currentNode != null) {
-                    if (list.Count == (end - except)) {
-                        currentNode = currentNode.Next ?? _circurlarLinkedList.First;
-                        break;
-                    }
-                    var isSkipRequired = skiped < except;
-
-                    if (!isSkipRequired) {
-                        list.Add(currentNode.Value);
-                    } else {
-                        skiped++;
-                    }
-
-                    currentNode = currentNode.Next ?? _circurlarLinkedList.First;
-                }
-
-
-
-
-                skiped = 0;
-
-                if (list.Count > 0) {
-                    possiblities.Add(list);
-                }
-            }
-
-
-        }
-
-
+        
         public static int GetSum(List<int> collection, List<int> indexes) {
             int len = indexes.Count;
             int sum = 0;

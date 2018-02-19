@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using ProgrammingAlgorithom.Base;
 
 namespace ProgrammingAlgorithom.Solution {
-    public static class StringCombinationGenerator {
+    public static class CombinationGenerator {
 
         private static int calls = 0;
         public static void CombinationHelper(string givenString, List<string> chosenList) {
@@ -41,6 +41,40 @@ namespace ProgrammingAlgorithom.Solution {
             Console.WriteLine("\nTotal Calls : " + calls);
         }
 
-       
+        public static void CombinationHelper<T>(LinkedList<T> list, List<T> chosen, ref List<List<T>> compiledList) {
+            calls++;
+            if (list.Count == 0) {
+                if (chosen.Count > 0) {
+                    compiledList.Add(new List<T>(chosen));
+                }
+                // chosen = new List<T>(list.Count);
+            } else {
+                // chose
+                var first = list.First.Value;
+                list.RemoveFirst();
+                chosen.Add(first);
+
+                // explore
+                CombinationHelper(list, chosen, ref compiledList);
+
+                // un-chose
+                chosen.RemoveAt(chosen.Count - 1);
+                CombinationHelper(list, chosen, ref compiledList);
+                list.AddFirst(first);
+
+            }
+        }
+
+        public static List<List<T>> Combination<T>(LinkedList<T> list) {
+            calls = 0;
+            var chosen = new List<T>(list.Count);
+            var possibilities = Math.Pow((double) 2, (double) list.Count);
+            var compiledList = new List<List<T>>((int) possibilities);
+
+            CombinationHelper(list, chosen, ref compiledList);
+
+            Console.WriteLine("\nTotal Calls : " + calls);
+            return compiledList;
+        }
     }
 }

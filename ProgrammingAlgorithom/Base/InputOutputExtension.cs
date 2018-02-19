@@ -23,6 +23,18 @@ namespace ProgrammingAlgorithom.Base {
             Console.Write("]");
         }
 
+        public static void PrintList<T>(List<T> list, List<int> indexes) {
+            Console.WriteLine("");
+            Console.Write("[");
+            // list.ForEach(item => Console.Write(item + ",")); //Put a,b etc.
+            var list2 = new List<T>(list.Count);
+            foreach (var cIndex in indexes) {
+                list2.Add(list[cIndex]);
+            }
+            Console.Write(string.Join(",", list2));
+            Console.Write("]");
+        }
+
         public static void PrintArray<T>(T[] list) {
             Console.WriteLine("");
             Console.Write("[");

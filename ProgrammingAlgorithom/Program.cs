@@ -7,7 +7,8 @@ namespace ProgrammingAlgorithom {
     public class Program {
 
         public static void Main(String[] args) {
-            QuasiRunner.Run();
+            // CombinationRunner.Run2();
+            PowerSumRunner.Run();
         }
     }
 }
