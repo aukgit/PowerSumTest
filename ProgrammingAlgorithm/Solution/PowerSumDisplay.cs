@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using ProgrammingAlgorithom.Base;
 using IO = ProgrammingAlgorithom.Base.InputOutputExtension;
 
 namespace ProgrammingAlgorithom.Solution {
     public class PowerSumDisplay {
-        const int SumOf10SquareCollection = 385;
-        const int SumOf14SquareCollection = 1015;
-        const int SumOf10CubeCollection = 3025;
-        private static Dictionary<string, List<int>> _cachedPossibleNumbers = new Dictionary<string, List<int>>(300);
-        private static Dictionary<string, List<List<int>>> _cachedListIndexes = new Dictionary<string, List<List<int>>>(500);
 
-        static List<int> CreateOrGetPossibleList(double targetedNumber, double power) {
+        private static readonly Dictionary<string, LinkedList<int>> _cachedPossibleNumbers = new Dictionary<string, LinkedList<int>>(300);
+
+        static LinkedList<int> CreateOrGetPossibleList(double targetedNumber, double power) {
             var key = "t:" + targetedNumber + "|p:" + power;
 
             if (_cachedPossibleNumbers.ContainsKey(key)) {
@@ -25,15 +20,32 @@ namespace ProgrammingAlgorithom.Solution {
             return possibleNumbersList;
         }
 
-        static List<List<int>> CreateOrGetPossibleIndexes(int range) {
-            var key = "r:" + range + "|";
-            if (_cachedListIndexes.ContainsKey(key)) {
-                return _cachedListIndexes[key];
-            }
 
-            var indexesCollection = GenerateIndexesCombination(range);
-            _cachedListIndexes[key] = indexesCollection;
-            return indexesCollection;
+        public static void PowerSumHelper(LinkedList<int> list, List<int> chosen, int sumUpto, ref int totalFound, int target) {
+            if (list.Count == 0) {
+                if (sumUpto == target) {
+                    // IO.PrintList(chosen);
+                    totalFound = totalFound + 1;
+                }
+            } else {
+                var first = list.First.Value;
+                chosen.Add(first);
+                list.RemoveFirst();
+                sumUpto += first;
+
+                // explore
+                if (sumUpto <= target) {
+                    PowerSumHelper(list, chosen, sumUpto, ref totalFound, target);
+                }
+                // unchose
+                chosen.RemoveAt(chosen.Count - 1);
+                sumUpto -= first;
+                if (sumUpto <= target) {
+                    PowerSumHelper(list, chosen, sumUpto, ref totalFound, target);
+                }
+                list.AddFirst(first);
+
+            }
         }
 
         public static int PowerSum(int targetedNumber, int power) {
@@ -41,45 +53,25 @@ namespace ProgrammingAlgorithom.Solution {
             double dTargetedNumber = (double) targetedNumber;
             double dPower = (double) power;
             var possibleNumbersList = CreateOrGetPossibleList(dTargetedNumber, dPower);
+            var chosen = new List<int>(possibleNumbersList.Count);
+            int totalFound = 0;
+            int sumUpto = 0;
             //var clonedList = new 
+            PowerSumHelper(possibleNumbersList, chosen, sumUpto, ref totalFound, targetedNumber);
 
-            var indexesCollection = CreateOrGetPossibleIndexes(possibleNumbersList.Count);
-
-            var targetMatched = 0;
-
-            Console.WriteLine("Found sum to be accurate : ");
-            foreach (var indexes in indexesCollection) {
-                var sum = GetSum(possibleNumbersList, indexes);
-                if (sum == targetedNumber) {
-                    IO.PrintList(possibleNumbersList, indexes);
-                    targetMatched++;
-                }
-            }
-
-            return targetMatched;
+            return totalFound;
         }
 
 
-        public static List<int> CreatePossibleNumbersList(double targetedNumber, double power) {
-            int ending = (int)targetedNumber;
-
-            //bool isSqaure = (int) power == 2;
-
-            //if ((int) power == 1) {
-            //    ending = 1000;
-            //    return Enumerable.Range(1, ending).AsParallel().ToList();
-            //}
-
-
-            double sum = 0;
-
-            var sumList = new List<int>(ending + 10);
+        public static LinkedList<int> CreatePossibleNumbersList(double targetedNumber, double power) {
+            int ending = (int) targetedNumber;
+            var sumList = new LinkedList<int>();
 
             for (double i = 1; i <= ending; i++) {
                 double poweredValue = 0;
                 poweredValue = Math.Pow(i, power);
-                sumList.Add((int) poweredValue);
-                sum += poweredValue;
+                sumList.AddLast((int) poweredValue);
+                // sum += poweredValue;
                 //if (poweredValue >= targetedNumber) {
                 //    return sumList;
                 //}
@@ -88,13 +80,8 @@ namespace ProgrammingAlgorithom.Solution {
             return sumList;
         }
 
-        public static List<List<int>> GenerateIndexesCombination(int range) {
-            var list = new LinkedList<int>(Enumerable.Range(0, range));
-            return CombinationGenerator.Combination(list);
-        }
-        
-        public static int GetSum(List<int> collection, List<int> indexes) {
-            int len = indexes.Count;
+        public static int GetSum(List<int> collection) {
+            int len = collection.Count;
             int sum = 0;
 
 
@@ -103,7 +90,7 @@ namespace ProgrammingAlgorithom.Solution {
             }
 
             if (len == 2) {
-                sum = collection[indexes[0]] + collection[indexes[1]];
+                sum = collection[0] + collection[1];
                 return sum;
             }
 
@@ -112,11 +99,11 @@ namespace ProgrammingAlgorithom.Solution {
             // Console.WriteLine("Mid : " + indexes[mid] + "; val :" + collection[indexes[mid]]);
             for (int i = 0; i < mid; i++) {
                 // Console.WriteLine("indexes[i] : " + indexes[i] + ", val : " + collection[indexes[i]] + "; indexes[lastIndex - i] : " + indexes[lastIndex - i] + ", val : " + collection[indexes[lastIndex - i]]);
-                sum += collection[indexes[i]] + collection[indexes[lastIndex - i]];
+                sum += collection[i] + collection[lastIndex - i];
             }
 
             if (len % 2 == 1) {
-                sum = sum + collection[indexes[mid]];
+                sum = sum + collection[mid];
             }
 
             return sum;

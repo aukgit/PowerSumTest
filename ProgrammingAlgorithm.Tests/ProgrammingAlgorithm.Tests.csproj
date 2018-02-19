@@ -43,7 +43,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ProgrammingAlgorithom\ProgrammingAlgorithom.csproj">
+    <ProjectReference Include="..\ProgrammingAlgorithm\ProgrammingAlgorithm.csproj">
       <Project>{E494D196-B8D6-48A3-B982-6D0AC09768D0}</Project>
       <Name>ProgrammingAlgorithom</Name>
     </ProjectReference>
